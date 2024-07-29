@@ -29,7 +29,7 @@ connectDB();
 
 // Middleware
 app.use(cors({
-  origin: 'https://66a6e9c8c81f7ab5b9946e32--vermillion-smakager-28e6d8.netlify.app', // Your frontend URL
+  origin: 'https://vermillion-smakager-28e6d8.netlify.app', // Your frontend URL
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true, // Allow credentials (cookies, etc.)
