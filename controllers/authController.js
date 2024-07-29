@@ -1,5 +1,5 @@
 const User = require('../models/User');
-const Otp = require('../models/Otp'); // You can remove this if you're not using it anymore
+const Otp = require('../models/otp'); // You can remove this if you're not using it anymore
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const otpGenerator = require('otp-generator'); // You can keep this for OTP generation
