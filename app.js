@@ -8,7 +8,9 @@ const userRoutes = require('./routes/userRoutes');
 const cors = require('cors');
 
 const app = express();
-const uri = process.env.MONGODB_URI; // Use environment variable for MongoDB URI
+
+// Use environment variable for MongoDB URI
+const uri = process.env.MONGODB_URI; // Make sure this is defined in your .env file
 
 async function connectDB() {
   try {
@@ -27,10 +29,10 @@ connectDB();
 
 // Middleware
 app.use(cors({
-  origin: 'https://66a6e9c8c81f7ab5b9946e32--vermillion-smakager-28e6d8.netlify.app',
+  origin: 'https://66a6e9c8c81f7ab5b9946e32--vermillion-smakager-28e6d8.netlify.app', // Your frontend URL
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
+  credentials: true, // Allow credentials (cookies, etc.)
 }));
 
 app.use(express.json());
@@ -44,12 +46,6 @@ app.get('/', (req, res) => {
 app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
 app.use('/share', shareRoutes);
-
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ message: 'Internal Server Error' });
-});
 
 // Start the server
 const PORT = process.env.PORT || 7000;
