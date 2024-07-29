@@ -5,25 +5,18 @@ const cookieParser = require('cookie-parser');
 const authRoutes = require('./routes/authRoutes');
 const shareRoutes = require('./routes/shareRoutes');
 const userRoutes = require('./routes/userRoutes');
-const { MongoClient, ServerApiVersion } = require('mongodb');
 const cors = require('cors');
 
 const app = express();
-
-const uri = "mongodb+srv://groozify:yFLxe8VHoQp7bHeO@groozify.zecup2h.mongodb.net/?appName=Groozify";
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  }
-});
+const uri = process.env.MONGODB_URI; // Use environment variable for MongoDB URI
 
 async function connectDB() {
   try {
-    await client.connect();
-    await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+    await mongoose.connect(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log("MongoDB connected successfully!");
   } catch (error) {
     console.error("MongoDB connection error:", error);
     process.exit(1); // Exit process with failure
@@ -34,10 +27,10 @@ connectDB();
 
 // Middleware
 app.use(cors({
-  origin: 'https://66a6e9c8c81f7ab5b9946e32--vermillion-smakager-28e6d8.netlify.app', // Your frontend URL
+  origin: 'https://66a6e9c8c81f7ab5b9946e32--vermillion-smakager-28e6d8.netlify.app',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true, // Allow credentials (cookies, etc.)
+  credentials: true,
 }));
 
 app.use(express.json());
@@ -51,6 +44,12 @@ app.get('/', (req, res) => {
 app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
 app.use('/share', shareRoutes);
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ message: 'Internal Server Error' });
+});
 
 // Start the server
 const PORT = process.env.PORT || 7000;
