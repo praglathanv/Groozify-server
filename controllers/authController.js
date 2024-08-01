@@ -120,23 +120,9 @@ const authController = {
       const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
         expiresIn: '7d',
       });
-<<<<<<< HEAD
   
       // Send the token in the response
       res.json({ message: 'Login successful', user: { email: user.email }, token });
-=======
-
-      // Set JWT in cookie
-      res.cookie('token', token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
-        path: '/',
-        maxAge: 7 * 24 * 60 * 60 * 1000,
-      });
-
-      res.json({ message: 'Login successful', user: { email: user.email } });
->>>>>>> 9c0a1d4f4fb4eb3349f887f03f8616e1cc75f897
     } catch (err) {
       console.error(err.message);
       res.status(500).json({ error: 'Server error' });
