@@ -31,7 +31,11 @@ connectDB();
 
 // Middleware
 app.use(cors({
+<<<<<<< HEAD
   origin:'https://groozify-client.vercel.app' , // Your frontend URL
+=======
+  origin: 'https://groozify-client.vercel.app', // Your frontend URL
+>>>>>>> 9c0a1d4f4fb4eb3349f887f03f8616e1cc75f897
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true, // Allow credentials (cookies, etc.)
