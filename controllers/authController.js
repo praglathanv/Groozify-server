@@ -104,40 +104,32 @@ const authController = {
 
   login: async (req, res) => {
     const { email } = req.body;
-
+  
     try {
       // Check if the user exists
       const user = await User.findOne({ email });
       if (!user) {
         return res.status(404).json({ error: 'User not found' });
       }
-
+  
       if (!user.isEmailVerified) {
         return res.status(403).json({ error: 'Email not verified' });
       }
-
+  
       // Generate JWT
       const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
         expiresIn: '7d',
       });
-
-      // Set JWT in cookie
-      res.cookie('token', token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
-        maxAge: 7 * 24 * 60 * 60 * 1000,
-      });
-
-      res.json({ message: 'Login successful', user: { email: user.email } });
+  
+      // Send the token in the response
+      res.json({ message: 'Login successful', user: { email: user.email }, token });
     } catch (err) {
       console.error(err.message);
       res.status(500).json({ error: 'Server error' });
     }
-  },
+  },  
 
   logout: (req, res) => {
-    res.cookie('token', '', { maxAge: 1 }); // Clear the cookie by setting a very short expiration time
     res.json({ message: 'Logout successful' });
   },
 
